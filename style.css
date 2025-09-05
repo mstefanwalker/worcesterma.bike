@@ -1,0 +1,28 @@
+html {
+	scroll-snap-type: y mandatory;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0 auto;
+    max-width: 30rem;
+    line-height: 1.6;
+    font-size: 1.2rem;
+    padding: 0 1rem;
+}
+
+header, section {
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+}
+
+h1, h2, h3 {
+    line-height: 1.2;
+}
+
+a:visited {
+    color: LinkText;
+}
