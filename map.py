@@ -13,18 +13,19 @@ import geopandas as gpd
 
 
 def main():
-    gdf = gpd.read_file('street_centerlines.geojson')
-    print(gdf.head(), end="\n\n")
+    geo_df = gpd.read_file('street_centerlines.geojson')
+    name_df = pd.read_csv('street_name_table.csv')
+    geo_df = geo_df.merge(name_df, how='left', left_on='NEW_NM_ID', right_on='new_nm_id')
 
-    df = pd.read_csv('street_name_table.csv')
-    print(df.head(), end="\n\n")
+    print(geo_df.head(), end="\n\n")
+    print(geo_df.columns, end="\n\n")
 
-    for i, row in enumerate(gdf.iterfeatures()):
+    for i, row in enumerate(geo_df.iterfeatures()):
         if i >= 10:
             break
         nm_id = row['properties']['NEW_NM_ID']
         speed = row['properties']['Speed']
-        name = df.loc[df['new_nm_id'] == nm_id, 'full_name'].to_string(header=False, index=False)
+        name = row['properties']['full_name']
         coords = row['geometry']['coordinates']
         print(f'{nm_id} {speed:2} {name:20} {str(coords)[:50]}...')
 
