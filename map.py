@@ -23,8 +23,14 @@ def main():
     geo_df['minx'], geo_df['miny'], geo_df['maxx'], geo_df['maxy'] = minx, miny, maxx, maxy
     diffx = maxx - minx
     diffy = maxy - miny
-    if diffy > diffx: geo_df['scale'] = 1 / diffy
-    else: geo_df['scale'] = 1 / diffx
+    if diffy > diffx:
+        geo_df['scale'] = 1 / diffy
+        geo_df['offsetx'] = 0
+        geo_df['offsety'] = 0.5 * (diffy - diffx)
+    else:
+        geo_df['scale'] = 1 / diffx
+        geo_df['offsetx'] = 0.5 * (diffx - diffy)
+        geo_df['offsety'] = 0
 
     geo_df['svg'] = geo_df.apply(lambda r: row_to_svg(r), axis=1)
 
@@ -46,8 +52,8 @@ def row_to_svg(row):
     coords = get_coordinates(line)
     svg_line = 'M'
     for coord in coords:
-        x = (coord[0] - row['minx']) * row['scale']
-        y = (coord[1] - row['miny']) * row['scale']
+        x = (coord[0] - row['minx'] + row['offsety']) * row['scale']
+        y = (coord[1] - row['miny'] + row['offsetx']) * row['scale']
         y = 1 - y # flip y because 0, 0 is top left
         svg_line += f'{x},{y} L'
     svg_line = svg_line[:-2]
