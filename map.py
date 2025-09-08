@@ -31,7 +31,7 @@ def main():
     print(geo_df.head(), end="\n\n")
     print(geo_df.columns, end="\n\n")
 
-    svg_string = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 1 1" fill="none">'
+    svg_string = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" fill="none">'
     geo_df = geo_df.sort_values(by=['Speed'], ascending=False) # place gray roads below green roads
     for row in geo_df.iterfeatures():
         svg_string += row['properties']['svg'] + '\n'
